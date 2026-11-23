@@ -29,5 +29,7 @@ def run(url: str) -> None:
 
     store(key=url, value=all_data_dns)
 
+# Run`python3 main.py {site_url}` on your terminal
+#  ex. `python3 main.py figma.com`
 if __name__ == "__main__":
     run(sys.argv[1])
