@@ -1,6 +1,6 @@
 # TRACER
 
-This app is supposed to be run via `python3 main.py {site_url}`. However, this app uses Mongodb which requires configuration of a secret key so I would need to host this app to allow the use of it.
+This app is supposed to be run via `python3 main.py {site_url}` on the terminal. However, this app uses Mongodb which requires configuration of a secret key so I would need to host this app to allow the use of it.
 
 My goal was to set this up as a backend server that takes a request with the URL to be scrapped. The server then would use the `dnspython` library to look up the given URL contains and gather the detected sites in it.
 
@@ -12,6 +12,15 @@ The set up was quite simple. I'm using Mongodb document storage in two separate 
 2. a collection of cleaned up version of the results from the original `dig` query
 
 This enables me to do two things: return the cleaned version of the `dig` results from the given url, and maintain a source of truth for the exact string of each detection the URL was matched on.
+
+### Path:
+
+```
+Req: [ client ] → www.website.com → [ server ]
+
+Res: [ client ] ← [ COMPANIES ] ← [ server ] →  dig lookups → [ storage ]
+
+```
 
 ### Improvements:
 
