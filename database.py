@@ -3,7 +3,9 @@ from typing import Any
 
 from pymongo import MongoClient
 
-def store_raw(key: str, value: Any) -> None:
+from rules import extract_company_identifiers
+
+def _store_raw(key: str, value: Any) -> None:
     """
         Key: the key for the mongodb record
         Value: the value for the key to be stored in mongodb
@@ -20,7 +22,7 @@ def store_raw(key: str, value: Any) -> None:
     finally:
         client.close()
 
-def store_cleaned(key: str, value: Any) -> None:
+def _store_cleaned(key: str, value: Any) -> None:
     """
         Key: the key for the mongodb record
         Value: the value for the key to be stored in mongodb
@@ -36,3 +38,13 @@ def store_cleaned(key: str, value: Any) -> None:
         print("added", key, "to mongodb")
     finally:
         client.close()
+
+
+def store(key: str, value: str) -> None:
+    """
+        Key: the key for the mongodb record
+        Value: the value for the key to be stored in mongodb
+    """
+    cleaned_company_ids = extract_company_identifiers(value)
+    _store_raw(key=key, value=value)
+    _store_cleaned(key=key, value=cleaned_company_ids)
