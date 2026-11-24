@@ -18,7 +18,7 @@ def _store_raw(key: str, value: Any) -> None:
         collection.replace_one(
             {"_id": key}, {"_id": key, "value": value}, upsert=True
         )
-        print("added", key, "to mongodb")
+        print("added raw", key, "to mongodb")
     finally:
         client.close()
 
@@ -35,12 +35,12 @@ def _store_cleaned(key: str, value: Any) -> None:
         collection.replace_one(
             {"_id": key}, {"_id": key, "value": value}, upsert=True
         )
-        print("added", key, "to mongodb")
+        print("added cleaned", key, "to mongodb")
     finally:
         client.close()
 
 
-def store(key: str, value: str) -> None:
+def store(key: str, value: list[str]) -> list[str]:
     """
         Key: the key for the mongodb record
         Value: the value for the key to be stored in mongodb
@@ -48,3 +48,4 @@ def store(key: str, value: str) -> None:
     cleaned_company_ids = extract_company_identifiers(value)
     _store_raw(key=key, value=value)
     _store_cleaned(key=key, value=cleaned_company_ids)
+    return cleaned_company_ids
