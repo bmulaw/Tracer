@@ -1,8 +1,8 @@
 # TRACER
 
-This app is supposed to be run via `python3 main.py {site_url}` on the terminal. However, this app uses Mongodb which requires configuration of a secret key so I would need to host this app to allow the use of it.
+This app can be found here https://tracer-pied.vercel.app/api/analyze?url=bloomberg.com where the qeury param `url` can be set to any website.
 
-My goal was to set this up as a backend server that takes a request with the URL to be scrapped. The server then would use the `dnspython` library to look up the given URL contains and gather the detected sites in it.
+I have only set a backend server that takes a request with the URL to be scrapped via a query parameter. The server then would use the `dnspython` library to look up the given URL contains and gather the detected sites in it. The app uses Mongodb as a storage system.
 
 ### Set up:
 
@@ -13,12 +13,12 @@ The set up was quite simple. I'm using Mongodb document storage in two separate 
 
 This enables me to do two things: return the cleaned version of the `dig` results from the given url, and maintain a source of truth for the exact string of each detection the URL was matched on.
 
-### Path:
+### Flow:
 
 ```
-Req: [ client ] → www.website.com → [ server ]
+Request: [ client ] → www.website.com → [ server ]
 
-Res: [ client ] ← [ COMPANIES ] ← [ server ] →  dig lookups → [ storage ]
+Response: [ client ] ← [ COMPANIES ] ← [ server ] →  dig lookups → [ storage ]
 
 ```
 
