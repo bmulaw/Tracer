@@ -12,6 +12,17 @@ _DNS_LOOKUPS = ["TXT", "MX", "NS"]
 
 app = Flask(__name__)
 
+def safe_dns_query(url: str, dns_type: str) -> list[str]:
+    try:
+        return [str(rdata) for rdata in dns.resolver.resolve(url, dns_type)]
+    except (
+        dns.resolver.NoAnswer,
+        dns.resolver.NXDOMAIN,
+        dns.resolver.NoNameservers,
+        dns.exception.Timeout,  
+    ):
+        return []
+
 def run(url: str) -> list[str]:
     """
         Url: the url to be queried for all software integrated to the site of the hostname
@@ -19,7 +30,7 @@ def run(url: str) -> list[str]:
     records: list[str] = [
         str(rdata)
         for dns_type in _DNS_LOOKUPS
-        for rdata in dns.resolver.resolve(url, dns_type)
+        for rdata in safe_dns_query(url, dns_type)
     ]
 
     return store(key=url, value=records)
